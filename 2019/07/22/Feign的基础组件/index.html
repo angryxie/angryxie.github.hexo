@@ -79,16 +79,17 @@
 
 
 
-<meta name="description" content="个人博客，主要记录个人的技术成长，也可能聊一聊其它。">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Shea的博客">
-<meta property="og:url" content="http://yoursite.com/index.html">
+<meta name="description" content="前文提要：上一篇我们简单演示了Feign在SpringCloud和非SpringCloud下的使用。但是眼尖的朋友可能会发现了两种使用方式有一些不一样。SpringCloud下使用明显要简单的多，这其中的差距体现在下面这段代码中。 12345ItemService itemService= Feign.builder()            .decoder(new SpringDecoder(">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Feign的基础组件">
+<meta property="og:url" content="http://yoursite.com/2019/07/22/Feign的基础组件/index.html">
 <meta property="og:site_name" content="Shea的博客">
-<meta property="og:description" content="个人博客，主要记录个人的技术成长，也可能聊一聊其它。">
+<meta property="og:description" content="前文提要：上一篇我们简单演示了Feign在SpringCloud和非SpringCloud下的使用。但是眼尖的朋友可能会发现了两种使用方式有一些不一样。SpringCloud下使用明显要简单的多，这其中的差距体现在下面这段代码中。 12345ItemService itemService= Feign.builder()            .decoder(new SpringDecoder(">
 <meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-07-24T12:01:26.670Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Shea的博客">
-<meta name="twitter:description" content="个人博客，主要记录个人的技术成长，也可能聊一聊其它。">
+<meta name="twitter:title" content="Feign的基础组件">
+<meta name="twitter:description" content="前文提要：上一篇我们简单演示了Feign在SpringCloud和非SpringCloud下的使用。但是眼尖的朋友可能会发现了两种使用方式有一些不一样。SpringCloud下使用明显要简单的多，这其中的差距体现在下面这段代码中。 12345ItemService itemService= Feign.builder()            .decoder(new SpringDecoder(">
 
 
 
@@ -118,13 +119,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/">
+  <link rel="canonical" href="http://yoursite.com/2019/07/22/Feign的基础组件/">
 
 
 
 
 
-  <title>Shea的博客</title>
+  <title>Feign的基础组件 | Shea的博客</title>
   
 
 
@@ -143,8 +144,7 @@
     
   
 
-  <div class="container sidebar-position-left 
-  page-home">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -217,9 +217,9 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-  <section id="posts" class="posts-expand">
+
+  <div id="posts" class="posts-expand">
     
-      
 
   
 
@@ -249,9 +249,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/07/22/Feign的基础组件/" itemprop="url">Feign的基础组件</a></h1>
+          <h1 class="post-title" itemprop="name headline">Feign的基础组件</h1>
         
 
         <div class="post-meta">
@@ -301,9 +299,7 @@
       
 
       
-        
-          
-            <h1 id="前文提要："><a href="#前文提要：" class="headerlink" title="前文提要："></a>前文提要：</h1><p>上一篇我们简单演示了Feign在SpringCloud和非SpringCloud下的使用。但是眼尖的朋友可能会发现了两种使用方式有一些不一样。SpringCloud下使用明显要简单的多，这其中的差距体现在下面这段代码中。</p>
+        <h1 id="前文提要："><a href="#前文提要：" class="headerlink" title="前文提要："></a>前文提要：</h1><p>上一篇我们简单演示了Feign在SpringCloud和非SpringCloud下的使用。但是眼尖的朋友可能会发现了两种使用方式有一些不一样。SpringCloud下使用明显要简单的多，这其中的差距体现在下面这段代码中。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ItemService itemService= Feign.builder()</span><br><span class="line">            .decoder(<span class="keyword">new</span> SpringDecoder(objectFactory()))</span><br><span class="line">            .encoder(<span class="keyword">new</span> SpringEncoder(objectFactory()))</span><br><span class="line">            .client(<span class="keyword">new</span> Client.Default(<span class="keyword">null</span>, <span class="keyword">null</span>))</span><br><span class="line">            .target(ItemService.class,serviceUrl);</span><br></pre></td></tr></table></figure>
 
 <p>在这篇中，我们就来聊一下Feign的基础组件。</p>
@@ -354,8 +350,6 @@
 <h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>到这里对Feign的基础组件就介绍完了，其实Feign的组件做的事情就是HTTP请求应用层所做的事情。但是非SpringCloud使用Feign会有一个很大的缺陷，因为应用没有注册到eureka，所以无法直接从eureka获取实例的服务地址，所以在生成FeignClient的时候我们传入的是url，即实例的地址，这样的缺点就是负载均衡依赖外部实现，比如nginx，zuul等。</p>
 <p>其实非Spring项目也可以注册到eureka并且从eureka获取实例的服务地址，下一篇我们就来聊聊这里怎么实现。</p>
 
-          
-        
       
     </div>
     
@@ -372,154 +366,28 @@
       
 
       
-
-      
-
       
       
-        <div class="post-eof"></div>
+
       
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/16/聊一聊feign/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Shea·Cong">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Shea的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/07/16/聊一聊feign/" itemprop="url">spring使用feign</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
             
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-07-16T18:35:15+08:00">
-                2019-07-16
-              </time>
+              <a href="/2019/07/16/聊一聊feign/" rel="next" title="spring使用feign">
+                <i class="fa fa-chevron-left"></i> spring使用feign
+              </a>
             
+          </div>
 
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
             
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
+          </div>
         </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
       
 
       
-        
-          
-            <h1 id="简介："><a href="#简介：" class="headerlink" title="简介："></a>简介：</h1><p>最近接手了公司的一个旧项目，框架使用的是传统的SSM架构。正值公司推行SpringCloud微服务之际，所以研究了下Feign，着手在传统的Spring项目中接入Feign。</p>
-<h1 id="介绍："><a href="#介绍：" class="headerlink" title="介绍："></a>介绍：</h1><blockquote>
-<p>Feign是一个受到<a href="https://github.com/square/retrofit" target="_blank" rel="noopener">Retrofit</a>，<a href="https://github.com/jax-rs" target="_blank" rel="noopener">JAXRS-2.0</a>和<a href="http://www.oracle.com/technetwork/articles/java/jsr356-1937161.html" target="_blank" rel="noopener">WebSocket</a>的启发而诞生的HTTP请求框架，旨在降低JAVA使用HTTP请求的复杂性，开源地址<a href="https://github.com/OpenFeign/feign" target="_blank" rel="noopener">OpenFeign</a>。</p>
-</blockquote>
-<h1 id="Feign的基础使用："><a href="#Feign的基础使用：" class="headerlink" title="Feign的基础使用："></a>Feign的基础使用：</h1><ul>
-<li><h2 id="SpringBoot中使用"><a href="#SpringBoot中使用" class="headerlink" title="SpringBoot中使用"></a>SpringBoot中使用</h2>如果你的项目是SpringBoot项目的话，那么接入Feign会变的非常简单切优雅，如下：<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@FeignClient</span>(value = <span class="string">"serviceId"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">ItemService</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * &lt;p&gt;通过itemID获取商品详情&lt;/p&gt;</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> itemId 商品的id</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> &#123;<span class="doctag">@link</span> GetItemResponse&#125; 返回值，其中&#123;<span class="doctag">@code</span> GetItemResponse.code&#125; 为200时，正常</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@since</span> 2019-04-22</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@PostMapping</span>(value = &#123;<span class="string">"/item/query/getItemDetailsById"</span>&#125;)</span><br><span class="line">    <span class="function">GetItemResponse <span class="title">getItemDetailsById</span><span class="params">(@RequestParam(name = <span class="string">"id"</span>)</span> Long itemId)</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-</li>
-</ul>
-<p>引入必要的依赖并且在启动类或配置类上加入<code>@EnableFeignClients</code>注解即可，一切都是那么的简单且优雅。</p>
-<ul>
-<li><h2 id="Spring中使用"><a href="#Spring中使用" class="headerlink" title="Spring中使用"></a>Spring中使用</h2>如果你的项目是Spring项目的话。那么你可以按照下面的方法使用Feign</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">ItemService</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * &lt;p&gt;通过itemID获取商品详情&lt;/p&gt;</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> itemId 商品的id</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> &#123;<span class="doctag">@link</span> GetItemResponse&#125; 返回值，其中&#123;<span class="doctag">@code</span> GetItemResponse.code&#125; 为200时，正常</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@since</span> 2019-04-22</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@RequestLine</span>(<span class="string">"GET /item/query/getItemDetailsById?id=&#123;id&#125;"</span>)</span><br><span class="line">    <span class="function">GetItemResponse <span class="title">getItemDetailsById</span><span class="params">(@Param(name = <span class="string">"id"</span>)</span> Long itemId)</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>和上面类似，但是由于注解<code>@FeignClient</code> 依赖<code>org.springframework.cloud.openfeign.FeignAutoConfiguration</code>类，而自动配置是SpringBoot的特性。关于SpringBoot的自动配置，感兴趣的朋友可以阅读<a href="https://docs.spring.io/spring-boot/docs/current/reference/html/using-boot-auto-configuration.html" target="_blank" rel="noopener">此处</a>，这里就不再赘述了。</p>
-<p>虽然无法使用自动配置来生成FeignClient，但是我们可以手动配置生成<code>Service</code>对应的<code>FeignClient</code>, 代码如下:</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    ItemService itemService= Feign.builder()</span><br><span class="line">            .decoder(<span class="keyword">new</span> SpringDecoder(objectFactory()))</span><br><span class="line">            .encoder(<span class="keyword">new</span> SpringEncoder(objectFactory()))</span><br><span class="line">            .client(<span class="keyword">new</span> Client.Default(<span class="keyword">null</span>, <span class="keyword">null</span>))</span><br><span class="line">            .target(ItemService.class,serviceUrl);</span><br><span class="line">    System.out.println(JSON.toJSONString(itemService.getItemDetailsById(<span class="number">3837919L</span>)));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>执行成功，结果如下：<br><img src="https://sheapic.oss-cn-shenzhen.aliyuncs.com/1563280323%281%29.jpg" alt="运行结果"></p>
-<ul>
-<li><h2 id="结尾"><a href="#结尾" class="headerlink" title="结尾"></a>结尾</h2>至此，Feign的基础使用就到这里了，但是这样的调用方式明显不够优雅，并且对于为什么要这样构建FeignClient也没有说明，encoder decoder client的作用是什么？下一篇就聊一聊FeignClient的几个基础组件吧。</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
       
     </footer>
   </div>
@@ -529,133 +397,11 @@
   </article>
 
 
-    
-      
 
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/15/第一篇博客/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Shea·Cong">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Shea的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/07/15/第一篇博客/" itemprop="url">第一篇博客</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-07-15T17:27:38+08:00">
-                2019-07-15
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="序："><a href="#序：" class="headerlink" title="序："></a>序：</h1><p>在创建这个博客之前，我的文档写的很少。一直以来给我都错误的认为作为一个开发人员，代码才是第一。犹记得毕业设计我程序90分，文档未及格差点二辩的教训。可惜在那次之后，我依然并没有反思，依然还是认为是老师太古板的问题。<br>毕业工作后，每每遇到问题，往往是解决后便不再管它，这个时候觉得自己能记住。后面遇到的问题越来越多，也慢慢感觉到力不从心，这个时候我开始记一些随笔。后面的事情都能猜到了，随笔多了自己都不知道自己在写什么东西了。后来我诞生了写博客的想法，但是一直以来也没有找到舒服的平台。<br>无意中找到一个优质的公众号，上面输出的一些内容让我获益匪浅，某天公众号开始推自己的博客，这时我有了搭建自己个人博客的想法，于是有了这个平台。</p>
-<h1 id="杂聊："><a href="#杂聊：" class="headerlink" title="杂聊："></a>杂聊：</h1><p>以后会在这个平台上记录一些自己的感悟，大多数是技术成长方面的吧，当然也不排除有时荒腔走板的聊一聊其它的事情，歌，电影甚至是八卦什么的。最后放一张前几天拍的一张照片吧。</p>
-<hr>
-<p><img src="https://sheapic.oss-cn-shenzhen.aliyuncs.com/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20190715202633.jpg" alt="夜广州" title="广州"></p>
-
-          
-        
+    <div class="post-spread">
       
     </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
   </div>
-  
-  
-  
-  </article>
-
-
-    
-  </section>
-
-  
 
 
           </div>
@@ -663,6 +409,10 @@
 
 
           
+
+  
+
+
 
         </div>
         
@@ -683,8 +433,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -726,6 +485,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前文提要："><span class="nav-number">1.</span> <span class="nav-text">前文提要：</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Feign的基础组件构成："><span class="nav-number">2.</span> <span class="nav-text">Feign的基础组件构成：</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Contract"><span class="nav-number">2.1.</span> <span class="nav-text">Contract</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Encoder和Decoder"><span class="nav-number">2.2.</span> <span class="nav-text">Encoder和Decoder</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Client"><span class="nav-number">2.3.</span> <span class="nav-text">Client</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结"><span class="nav-number">3.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -859,6 +634,10 @@
   
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 
